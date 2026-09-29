@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Role of a Flight Operations Officer (FOO) | Aviation Student Project</title>
+  <meta name="description" content="A comprehensive, interactive student aviation project exploring the role, duties, flight planning, weather analysis, and safety impact of Flight Operations Officers (Flight Dispatchers).">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Top Operational Status Bar / Ticker -->
+  <header class="ops-header">
+    <div class="ops-header-container">
+      <div class="ops-branding">
+        <span class="radar-pulse-dot"></span>
+        <span class="ops-logo-badge">OCC DISPATCH</span>
+        <span class="ops-subtitle">Operations Control Center • Flight Ops Student Project</span>
+      </div>
+
+      <div class="ops-ticker-wrapper">
+        <div class="ticker-label">LIVE OCC FEED:</div>
+        <div class="ticker-content" id="tickerContent">
+          <span>✈️ FLT PA-204 (KORD ➔ KJFK): DISPATCH RELEASE SIGNED</span>
+          <span>🌤️ METAR KJFK: 28014G22KT 10SM SCT040 BKN090 A2992</span>
+          <span>⚡ WEATHER ALERT: CONVECTIVE SIGMET OVER PENNSYLVANIA AIRSPACE</span>
+          <span>⛽ FUEL ALLOCATION: +1,200 LBS EXTRA FOR HEADWIND & WEATHER DEVIATION</span>
+          <span>📡 ACARS LINK: ALL FLIGHTS NORMAL & MONITORED</span>
+        </div>
+      </div>
+
+      <div class="ops-controls">
+        <div class="utc-clock" id="utcClock" title="Coordinated Universal Time (Zulu Time)">00:00:00 UTC</div>
+        <button id="audioToggleBtn" class="control-btn" title="Toggle OCC Room Audio Ambience">
+          <span class="btn-icon">🔊</span> <span class="btn-text">Audio</span>
+        </button>
+        <button id="presentationToggleBtn" class="control-btn highlight" title="Toggle Slide / Presentation Mode for Class">
+          <span class="btn-icon">📽️</span> <span class="btn-text">Classroom Mode</span>
+        </button>
+        <button onclick="window.print()" class="control-btn" title="Print this project as a report">
+          <span class="btn-icon">🖨️</span> <span class="btn-text">Print Report</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Navigation Bar -->
+  <nav class="main-nav">
+    <div class="nav-container">
+      <a href="#hero" class="nav-link active">Overview</a>
+      <a href="#what-is-foo" class="nav-link">What is a FOO?</a>
+      <a href="#duties" class="nav-link">Core Duties</a>
+      <a href="#interactive-lab" class="nav-link special-nav">Interactive Dispatcher Lab</a>
+      <a href="#flight-example" class="nav-link">Real Example (PA-204)</a>
+      <a href="#safety-impact" class="nav-link">Safety & Organization</a>
+      <a href="#speaker-notes" class="nav-link">Student Presentation Guide</a>
+      <a href="#conclusion" class="nav-link">Conclusion</a>
+    </div>
+  </nav>
+
+  <!-- Quick Floating Presentation Navigation (Visible during presentation mode) -->
+  <aside id="presentationControls" class="pres-controls hidden">
+    <div class="pres-status">Slide <span id="currentSlideNum">1</span> / 7</div>
+    <div class="pres-buttons">
+      <button id="prevSlideBtn" class="pres-btn">◀ Previous</button>
+      <button id="nextSlideBtn" class="pres-btn primary">Next Slide ▶</button>
+      <button id="exitPresBtn" class="pres-btn close">✕ Exit</button>
+    </div>
+  </aside>
+
+  <main class="page-container">
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="hero-section slide-target" data-slide="1">
+      <div class="hero-backdrop-grid"></div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-icon">✈️</span>
+          <span>Aviation Science & Flight Management Project</span>
+        </div>
+        <h1 class="hero-title">
+          THE ROLE OF A <span class="cyan-gradient">FLIGHT OPERATIONS OFFICER</span> IN AVIATION
+        </h1>
+        <p class="hero-lead">
+          Often called the <strong>Flight Dispatcher</strong>, the Flight Operations Officer (FOO) is the pilot’s trusted partner on the ground. Together with the Captain, the FOO shares joint legal responsibility for the safety, route, weather analysis, and fuel planning of every commercial flight.
+        </p>
+
+        <!-- Quick Metric Highlights -->
+        <div class="hero-metrics-grid">
+          <div class="metric-card">
+            <div class="metric-value">50 / 50</div>
+            <div class="metric-label">Joint Legal Authority with Captain</div>
+            <div class="metric-sub">No flight departs without FOO sign-off</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">100%</div>
+            <div class="metric-label">Pre-Flight Risk Scrutiny</div>
+            <div class="metric-sub">Weather, NOTAMs, aircraft weight & balance</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">24 / 7</div>
+            <div class="metric-label">Active Flight Following</div>
+            <div class="metric-sub">Live radar tracking from gate to gate</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">SAFETY</div>
+            <div class="metric-label">Fuel & Alternate Planning</div>
+            <div class="metric-sub">Guaranteed safe diversion options</div>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#interactive-lab" class="btn btn-primary">
+            <span>🚀 Try the Interactive Dispatch Lab</span>
+          </a>
+          <a href="#what-is-foo" class="btn btn-secondary">
+            <span>Explore The 4 Duties</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: WHAT IS A FOO? -->
+    <section id="what-is-foo" class="content-section slide-target" data-slide="2">
+      <div class="section-header">
+        <span class="section-tag">Aviation Fundamentals</span>
+        <h2 class="section-title">What is a Flight Operations Officer (FOO)?</h2>
+        <p class="section-desc">The licensed aviation professional who holds operational control from the ground.</p>
+      </div>
+
+      <div class="grid-2-col">
+        <div class="info-card featured-card">
+          <div class="card-icon-header">
+            <span class="aviation-icon">👨‍✈️🤝🏢</span>
+            <h3>"The Pilot on the Ground"</h3>
+          </div>
+          <p>
+            A <strong>Flight Operations Officer (FOO)</strong>, universally known in international commercial airlines as a <strong>Flight Dispatcher</strong>, is an internationally licensed professional stationed in the airline’s <strong>Operations Control Center (OCC)</strong>.
+          </p>
+          <div class="highlight-quote">
+            <div class="quote-bar"></div>
+            <p>
+              "Under international civil aviation regulations (ICAO Annex 6 / FAA 14 CFR Part 121), the Aircraft Captain and the Flight Operations Officer share <strong>joint responsibility</strong> for the safety, authorization, and initiation of every flight."
+            </p>
+          </div>
+          <p>
+            While pilots focus inside the cockpit on flying the aircraft, the FOO views the <em>entire global picture</em>: weather fronts 2,000 miles ahead, closed runways, geopolitical airspace restrictions, fuel economics, and connecting passenger flows.
+          </p>
+        </div>
+
+        <div class="info-card">
+          <div class="card-icon-header">
+            <span class="aviation-icon">⚖️</span>
+            <h3>Cockpit vs. Control Center: The Dual Partnership</h3>
+          </div>
+
+          <div class="comparison-table">
+            <div class="comp-row comp-header">
+              <div>Role</div>
+              <div>Aircraft Captain (PIC)</div>
+              <div>Flight Operations Officer (FOO)</div>
+            </div>
+            <div class="comp-row">
+              <div class="comp-title">Workstation</div>
+              <div>Cockpit / Flight Deck</div>
+              <div>Operations Control Center (OCC)</div>
+            </div>
+            <div class="comp-row">
+              <div class="comp-title">Core Focus</div>
+              <div>Direct stick-and-rudder, cabin & immediate flight safety</div>
+              <div>Big-picture route, global weather, fuel legalities & alternates</div>
+            </div>
+            <div class="comp-row">
+              <div class="comp-title">Pre-Flight Action</div>
+              <div>Walkaround inspection, approves flight plan</div>
+              <div>Builds flight plan, calculates fuel, files route with ATC</div>
+            </div>
+            <div class="comp-row">
+              <div class="comp-title">Authority</div>
+              <div>Final command of aircraft in flight</div>
+              <div>Joint authority to cancel, delay or reroute the flight</div>
+            </div>
+          </div>
+
+          <div class="dispatch-badge-rule">
+            <span class="rule-icon">📝</span>
+            <div class="rule-text">
+              <strong>The Dual-Signature Rule:</strong> A commercial passenger flight cannot legally push back from the gate until <em>both</em> the Captain and the FOO electronically sign the <strong>Operational Flight Plan (OFP)</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: THE 4 MAIN DUTIES -->
+    <section id="duties" class="content-section slide-target" data-slide="3">
+      <div class="section-header">
+        <span class="section-tag">Core Responsibilities</span>
+        <h2 class="section-title">The 4 Primary Duties of a FOO</h2>
+        <p class="section-desc">Short, clear explanations of what a dispatcher does on every single flight shift.</p>
+      </div>
+
+      <div class="duties-grid">
+        <!-- Duty 1: Flight Planning -->
+        <div class="duty-card">
+          <div class="duty-number">01</div>
+          <div class="duty-icon">🗺️</div>
+          <h3 class="duty-title">Flight & Route Planning</h3>
+          <p class="duty-summary">
+            Designing the safest, fastest, and most fuel-efficient 3D highway in the sky from departure to arrival.
+          </p>
+          <ul class="duty-list">
+            <li><strong>Selects Airway Routes:</strong> Navigating via navigational waypoints, oceanic tracks, and jet streams.</li>
+            <li><strong>Calculates Optimum Altitude:</strong> Choosing cruise levels (e.g., FL360 vs FL380) to maximize tailwinds.</li>
+            <li><strong>Files ATC Flight Plan:</strong> Submits the official flight trajectory to air traffic management agencies.</li>
+            <li><strong>Weight & Balance Check:</strong> Ensures aircraft gross takeoff weight is strictly within structural safety limits.</li>
+          </ul>
+        </div>
+
+        <!-- Duty 2: Weather Analysis -->
+        <div class="duty-card">
+          <div class="duty-number">02</div>
+          <div class="duty-icon">⛈️</div>
+          <h3 class="duty-title">Checking Weather Conditions</h3>
+          <p class="duty-summary">
+            Constantly analyzing atmosphere hazards to prevent flights from flying into severe danger.
+          </p>
+          <ul class="duty-list">
+            <li><strong>Interprets METAR & TAF:</strong> Decodes current airport weather and 24-hour meteorological forecasts.</li>
+            <li><strong>Detects Severe Hazards:</strong> Avoids convective thunderstorms (SIGMET), clear-air turbulence, and icing zones.</li>
+            <li><strong>Upper-Air Wind Charts (WINTEM):</strong> Leverages 100+ knot jet streams to save time and thousands of gallons of fuel.</li>
+            <li><strong>Crosswind & Visibility Minimums:</strong> Checks if landing runway winds and fog are within legal safety limits.</li>
+          </ul>
+        </div>
+
+        <!-- Duty 3: Communication -->
+        <div class="duty-card">
+          <div class="duty-number">03</div>
+          <div class="duty-icon">📡</div>
+          <h3 class="duty-title">Communication & Coordination</h3>
+          <p class="duty-summary">
+            The central communication bridge connecting pilots with ground teams and airport authorities.
+          </p>
+          <ul class="duty-list">
+            <li><strong>Pre-Flight Pilot Briefing:</strong> Discusses weather challenges, delays, and fuel plans with the Captain.</li>
+            <li><strong>Cockpit ACARS Data-Link:</strong> Sends real-time text messages and weather updates directly to the cockpit screens.</li>
+            <li><strong>Airport Staff Liaison:</strong> Coordinates with ramp agents, fuelers, baggage handlers, and gate controllers.</li>
+            <li><strong>Maintenance & ATC Liaison:</strong> Evaluates Minimum Equipment List (MEL) items if an aircraft system has a snag.</li>
+          </ul>
+        </div>
+
+        <!-- Duty 4: Flight Monitoring -->
+        <div class="duty-card">
+          <div class="duty-number">04</div>
+          <div class="duty-icon">🛰️</div>
+          <h3 class="duty-title">Monitoring Flight Information</h3>
+          <p class="duty-summary">
+            Known as <em>"Flight Following"</em>: actively supervising aircraft from wheels-up until safe landing.
+          </p>
+          <ul class="duty-list">
+            <li><strong>Real-Time Radar Tracking:</strong> Monitors flight progress, groundspeed, altitude, and ETA against schedule.</li>
+            <li><strong>En-Route Fuel Burn Checks:</strong> Compares actual fuel consumed against planned burn every 30 minutes.</li>
+            <li><strong>Dynamic Rerouting:</strong> Redirects planes around pop-up storms or closed military airspaces.</li>
+            <li><strong>Emergency Diversion Management:</strong> Instantly prepares route, fuel, and medical services if a diversion is required.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: INTERACTIVE DISPATCHER LAB -->
+    <section id="interactive-lab" class="content-section lab-section slide-target" data-slide="4">
+      <div class="section-header">
+        <span class="section-tag lab-badge">Interactive Simulation</span>
+        <h2 class="section-title">Interactive Dispatcher Control Center</h2>
+        <p class="section-desc">Experience hands-on how a Flight Operations Officer plans routes, checks weather, and calculates fuel.</p>
+      </div>
+
+      <div class="lab-container">
+        <!-- Lab Tabs -->
+        <div class="lab-tabs">
+          <button class="lab-tab active" data-tab="tab-radar">
+            <span class="tab-icon">🗺️</span> 1. Flight Radar & Route Map
+          </button>
+          <button class="lab-tab" data-tab="tab-weather">
+            <span class="tab-icon">🌤️</span> 2. Weather Decoder (METAR/TAF)
+          </button>
+          <button class="lab-tab" data-tab="tab-fuel">
+            <span class="tab-icon">⛽</span> 3. Fuel Calculator Simulator
+          </button>
+          <button class="lab-tab" data-tab="tab-comms">
+            <span class="tab-icon">💬</span> 4. Pilot ACARS Comms
+          </button>
+        </div>
+
+        <!-- TAB 1: RADAR & ROUTE MAP -->
+        <div class="tab-panel active" id="tab-radar">
+          <div class="radar-box">
+            <div class="radar-hud-bar">
+              <div class="hud-item"><span class="hud-label">FLIGHT:</span> <strong class="cyan-text">PA-204</strong></div>
+              <div class="hud-item"><span class="hud-label">ROUTE:</span> <strong>KORD (Chicago) ➔ KJFK (New York)</strong></div>
+              <div class="hud-item"><span class="hud-label">DISTANCE:</span> <strong>730 NM</strong></div>
+              <div class="hud-item"><span class="hud-label">STATUS:</span> <span class="badge-status live" id="flightStatusBadge">EN ROUTE (FL370)</span></div>
+              <div class="radar-controls">
+                <button id="toggleStormBtn" class="radar-toggle-btn">⚡ Show Storm Cell</button>
+                <button id="toggleRouteBtn" class="radar-toggle-btn">🔀 FOO Storm Reroute</button>
+                <button id="resetFlightBtn" class="radar-toggle-btn reset">↺ Restart Flight</button>
+              </div>
+            </div>
+
+            <!-- Radar Canvas -->
+            <div class="radar-display-wrap">
+              <canvas id="radarCanvas" width="900" height="380"></canvas>
+              <div class="radar-sweep-effect"></div>
+              <div class="radar-overlay-info" id="radarOverlay">
+                <div class="pilot-info-card">
+                  <div class="info-title">FLIGHT PA-204 TELEMETRY</div>
+                  <div class="info-grid">
+                    <div><span>ALT:</span> <strong id="telemetryAlt">37,000 FT</strong></div>
+                    <div><span>GS:</span> <strong id="telemetryGS">465 KTS</strong></div>
+                    <div><span>BURN:</span> <strong id="telemetryFuel">4,200 LBS/HR</strong></div>
+                    <div><span>ETA:</span> <strong id="telemetryETA">18:42 UTC</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="radar-caption">
+              <span class="caption-icon">💡</span>
+              <span id="radarCaptionText">
+                <strong>Normal Planned Route:</strong> Flying direct via Airway J60. FOO continuously watches for thunderstorm activity along the Allegheny Mountain ridge.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: WEATHER DECODER -->
+        <div class="tab-panel" id="tab-weather">
+          <div class="weather-lab-grid">
+            <div class="weather-input-card">
+              <h3>Airport Meteorological Report (METAR)</h3>
+              <p class="card-subtext">Aviation weather is transmitted in coded alphanumeric messages. Dispatchers decode them in seconds:</p>
+
+              <div class="preset-airports">
+                <span class="preset-label">Sample Station:</span>
+                <button class="preset-chip active" data-airport="KJFK">KJFK (New York)</button>
+                <button class="preset-chip" data-airport="KORD">KORD (Chicago)</button>
+                <button class="preset-chip" data-airport="EGLL">EGLL (London Heathrow)</button>
+                <button class="preset-chip" data-airport="OMDB">OMDB (Dubai)</button>
+              </div>
+
+              <div class="code-box">
+                <div class="code-label">RAW TELETYPE METAR STRING:</div>
+                <div class="code-text" id="rawMetarText">KJFK 281451Z 19014G22KT 10SM SCT040 BKN090 22/16 A2992 RMK AO2</div>
+              </div>
+
+              <button id="decodeWeatherBtn" class="btn btn-primary full-width">
+                <span>🔍 Click to Decode for Pilots & Students</span>
+              </button>
+            </div>
+
+            <div class="weather-result-card">
+              <div class="result-header">
+                <span class="status-indicator good" id="flightCategoryDot"></span>
+                <h3 id="weatherStationTitle">KJFK - New York JFK International</h3>
+                <span class="vfr-badge" id="vfrBadge">VFR (Visual Flight Rules) - SAFE</span>
+              </div>
+
+              <div class="weather-breakdown-grid" id="weatherBreakdown">
+                <div class="w-item">
+                  <div class="w-label">💨 Wind Direction & Speed</div>
+                  <div class="w-val" id="wWind">190° at 14 knots (Gusting 22 kts)</div>
+                  <div class="w-note">Crosswind component within safe limits for Runway 22L.</div>
+                </div>
+                <div class="w-item">
+                  <div class="w-label">👁️ Surface Visibility</div>
+                  <div class="w-val" id="wVis">10 Statute Miles</div>
+                  <div class="w-note">Excellent visibility; no fog or low mist restrictions.</div>
+                </div>
+                <div class="w-item">
+                  <div class="w-label">☁️ Cloud Ceiling</div>
+                  <div class="w-val" id="wClouds">Scattered 4,000 ft, Broken 9,000 ft</div>
+                  <div class="w-note">Ceiling well above minimum approach landing limits.</div>
+                </div>
+                <div class="w-item">
+                  <div class="w-label">🌡️ Temperature & Pressure</div>
+                  <div class="w-val" id="wTemp">22°C / Dewpoint 16°C | Altimeter 29.92 inHg</div>
+                  <div class="w-note">Standard atmospheric pressure; optimal engine performance.</div>
+                </div>
+              </div>
+
+              <div class="dispatcher-verdict">
+                <span class="verdict-icon">✅</span>
+                <div class="verdict-text" id="dispatcherVerdictText">
+                  <strong>FOO Operational Assessment:</strong> Destination weather is legal and stable. However, an alternate airport (KEWR - Newark) is designated in case runway congestions occur.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: FUEL CALCULATOR -->
+        <div class="tab-panel" id="tab-fuel">
+          <div class="fuel-calculator-grid">
+            <div class="fuel-controls-card">
+              <h3>Flight Fuel Planning Simulator</h3>
+              <p class="card-subtext">Commercial aircraft cannot simply "fill the tank" (too heavy to fly efficiently). The FOO computes the precise legal fuel:</p>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <label for="distRange">Flight Distance (Nautical Miles):</label>
+                  <span class="slider-val" id="distVal">730 NM</span>
+                </div>
+                <input type="range" id="distRange" min="250" max="2500" value="730" step="25">
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <label for="paxRange">Passengers & Cargo Load:</label>
+                  <span class="slider-val" id="paxVal">160 Passengers (Full)</span>
+                </div>
+                <input type="range" id="paxRange" min="50" max="180" value="160" step="5">
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <label for="windRange">En-Route Wind Factor:</label>
+                  <span class="slider-val" id="windVal">-20 kts (Headwind)</span>
+                </div>
+                <input type="range" id="windRange" min="-60" max="60" value="-20" step="5">
+              </div>
+
+              <div class="checkbox-group">
+                <label class="custom-check">
+                  <input type="checkbox" id="weatherReserveCheck" checked>
+                  <span class="check-box"></span>
+                  <span>Add Weather Avoidance Buffer (+1,200 lbs)</span>
+                </label>
+              </div>
+
+              <div class="fuel-formula-callout">
+                <strong>ICAO Fuel Formula:</strong><br>
+                <code>Block Fuel = Taxi + Trip + Contingency + Alternate + Final Reserve</code>
+              </div>
+            </div>
+
+            <div class="fuel-breakdown-card">
+              <div class="fuel-total-box">
+                <span class="total-label">TOTAL DISPATCH RAMP / BLOCK FUEL:</span>
+                <span class="total-amount" id="totalBlockFuel">19,850 LBS</span>
+                <span class="total-sub">(Approx. 2,962 Gallons Jet-A1)</span>
+              </div>
+
+              <div class="fuel-categories-list">
+                <div class="fuel-item">
+                  <div class="item-title">
+                    <span class="color-dot trip"></span>
+                    <span>1. Trip Fuel (Actual flying burn)</span>
+                  </div>
+                  <strong class="item-val" id="fuelTrip">11,250 lbs</strong>
+                </div>
+
+                <div class="fuel-item">
+                  <div class="item-title">
+                    <span class="color-dot contingency"></span>
+                    <span>2. Contingency Fuel (5% unforeseen delay)</span>
+                  </div>
+                  <strong class="item-val" id="fuelContingency">600 lbs</strong>
+                </div>
+
+                <div class="fuel-item">
+                  <div class="item-title">
+                    <span class="color-dot alternate"></span>
+                    <span>3. Alternate Airport Fuel (Divert to KEWR)</span>
+                  </div>
+                  <strong class="item-val" id="fuelAlternate">3,400 lbs</strong>
+                </div>
+
+                <div class="fuel-item">
+                  <div class="item-title">
+                    <span class="color-dot reserve"></span>
+                    <span>4. Final Holding Reserve (ICAO 30 Mins)</span>
+                  </div>
+                  <strong class="item-val" id="fuelReserve">2,800 lbs</strong>
+                </div>
+
+                <div class="fuel-item">
+                  <div class="item-title">
+                    <span class="color-dot taxi"></span>
+                    <span>5. Taxi & Ground APU Fuel</span>
+                  </div>
+                  <strong class="item-val" id="fuelTaxi">600 lbs</strong>
+                </div>
+
+                <div class="fuel-item extra" id="extraFuelRow">
+                  <div class="item-title">
+                    <span class="color-dot extra"></span>
+                    <span>6. Dispatcher Extra Fuel (Storm Avoidance)</span>
+                  </div>
+                  <strong class="item-val" id="fuelExtra">+1,200 lbs</strong>
+                </div>
+              </div>
+
+              <!-- Visual Fuel Stack Bar -->
+              <div class="fuel-bar-wrapper">
+                <div class="fuel-bar-labels">
+                  <span>Trip: ~57%</span>
+                  <span>Reserve & Alternate: ~43% (Safety Margin)</span>
+                </div>
+                <div class="fuel-bar-container">
+                  <div class="f-segment trip" style="width: 57%;" title="Trip Fuel"></div>
+                  <div class="f-segment contingency" style="width: 5%;" title="Contingency"></div>
+                  <div class="f-segment alternate" style="width: 17%;" title="Alternate Fuel"></div>
+                  <div class="f-segment reserve" style="width: 14%;" title="Final Reserve"></div>
+                  <div class="f-segment taxi" style="width: 7%;" title="Taxi & Extra"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: PILOT COMMS -->
+        <div class="tab-panel" id="tab-comms">
+          <div class="comms-panel-grid">
+            <div class="comms-terminal">
+              <div class="terminal-header">
+                <span class="term-dot green"></span>
+                <span>ACARS / CPDLC VHF DATA LINK - AIR-TO-GROUND</span>
+                <span class="term-status">CONNECTED • 131.550 MHz</span>
+              </div>
+              <div class="terminal-body" id="commsChatLog">
+                <div class="chat-msg system">
+                  <span class="msg-time">14:10Z</span>
+                  <span class="msg-sender">[OCC SYSTEM]:</span>
+                  <span class="msg-body">Operational Flight Plan PA-204 Uplinked to Aircraft FMS.</span>
+                </div>
+                <div class="chat-msg pilot">
+                  <span class="msg-time">14:12Z</span>
+                  <span class="msg-sender">CAPTAIN (AIRCRAFT):</span>
+                  <span class="msg-body">"Dispatch, PA-204 review complete. We concur with routing J70 south to avoid Pennsylvania storm cell. Takeoff fuel confirmed 19,850 lbs."</span>
+                </div>
+                <div class="chat-msg foo">
+                  <span class="msg-time">14:13Z</span>
+                  <span class="msg-sender">FOO (DISPATCH OCC):</span>
+                  <span class="msg-body">"Roger PA-204, signed release approved on our end. New York ATC advises minor holding expected near waypoint LENDY; you have 45 mins reserve fuel. Have a good flight."</span>
+                </div>
+                <div class="chat-msg pilot">
+                  <span class="msg-time">14:55Z</span>
+                  <span class="msg-sender">CAPTAIN (EN-ROUTE FL370):</span>
+                  <span class="msg-body">"Dispatch, encountering moderate chop at FL370 over Ohio. Requesting pilot report (PIREP) for FL390."</span>
+                </div>
+                <div class="chat-msg foo">
+                  <span class="msg-time">14:56Z</span>
+                  <span class="msg-sender">FOO (DISPATCH OCC):</span>
+                  <span class="msg-body">"PA-204, Delta 415 just passed FL390 reporting completely smooth air. Coordinating with Cleveland Center for your climb now."</span>
+                </div>
+              </div>
+              <div class="terminal-input-bar">
+                <input type="text" id="commsCustomInput" placeholder="Type a message to the aircraft or OCC (e.g., 'Check fuel burn at waypoint ELX')...">
+                <button id="sendCommsBtn" class="btn btn-primary">Send ACARS</button>
+              </div>
+            </div>
+
+            <div class="comms-info-card">
+              <h3>The Ground-to-Cockpit Lifeline</h3>
+              <p>
+                In earlier decades, once an aircraft was airborne, pilots were isolated. Today, the <strong>Flight Operations Officer</strong> maintains continuous high-speed digital links with the crew using:
+              </p>
+              <div class="comms-features-list">
+                <div class="comm-feature">
+                  <span class="cf-icon">📟</span>
+                  <div>
+                    <strong>ACARS (Aircraft Communications Addressing and Reporting System):</strong>
+                    <p>Digital teletype sending weather, route revisions, runway lengths, and wind updates right to the pilot's printer and display screens.</p>
+                  </div>
+                </div>
+                <div class="comm-feature">
+                  <span class="cf-icon">📻</span>
+                  <div>
+                    <strong>VHF / HF Radio:</strong>
+                    <p>Direct voice link between the airline’s dispatch desk and pilots anywhere within line-of-sight or over oceans.</p>
+                  </div>
+                </div>
+                <div class="comm-feature">
+                  <span class="cf-icon">🛰️</span>
+                  <div>
+                    <strong>SATCOM (Satellite Communications):</strong>
+                    <p>Guarantees crystal-clear voice and data coverage even when flying over the North Pole or remote oceans.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: REAL-WORLD EXAMPLE (CASE STUDY) -->
+    <section id="flight-example" class="content-section slide-target" data-slide="5">
+      <div class="section-header">
+        <span class="section-tag">Case Study Walkthrough</span>
+        <h2 class="section-title">A Day in the Life: FOO Dispatching Flight PA-204</h2>
+        <p class="section-desc">A simple, realistic timeline showing how a dispatcher prepares a flight from Chicago to New York.</p>
+      </div>
+
+      <div class="timeline-container">
+        <!-- Step 1 -->
+        <div class="timeline-card">
+          <div class="tl-badge">T - 3 Hours</div>
+          <div class="tl-content">
+            <div class="tl-icon">☕🔍</div>
+            <h3>1. Meteorological & Airspace Scrutiny</h3>
+            <p>
+              The FOO arrives at the OCC console. They pull radar imagery and see a severe cold front moving across Pennsylvania with tops reaching 42,000 feet. The direct airway (J60) is dangerous due to hail and severe turbulence.
+            </p>
+            <div class="tl-action">
+              <strong>FOO Decision:</strong> Reject the standard direct route; plan a diversionary southern airway (J70) adding 35 nautical miles for passenger safety and zero turbulence.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="timeline-card">
+          <div class="tl-badge">T - 2 Hours</div>
+          <div class="tl-content">
+            <div class="tl-icon">💻📊</div>
+            <h3>2. Route & Fuel Calculation (OFP Generation)</h3>
+            <p>
+              The FOO enters passenger counts (160 pax) and cargo weight into the flight planning computer. They select <strong>KEWR (Newark)</strong> as the legal alternate airport because weather at JFK might see arrival delays.
+            </p>
+            <div class="tl-action">
+              <strong>FOO Decision:</strong> Orders 11,250 lbs trip fuel + 3,400 lbs alternate fuel + 2,800 lbs final reserve + 1,200 lbs extra weather buffer = 19,850 lbs total.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="timeline-card">
+          <div class="tl-badge">T - 1 Hour</div>
+          <div class="tl-content">
+            <div class="tl-icon">📋✍️</div>
+            <h3>3. Pilot Briefing & Joint Dispatch Release</h3>
+            <p>
+              The Captain reviews the package on their Electronic Flight Bag (iPad). They call the FOO via the OCC dispatch phone: <em>"We reviewed your weather routing around Pennsylvania; completely agree with the southern route and the extra fuel buffer."</em>
+            </p>
+            <div class="tl-action">
+              <strong>Legal Milestone:</strong> Both Captain and FOO digitally sign the Dispatch Release. Flight PA-204 is legally authorized for departure.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="timeline-card">
+          <div class="tl-badge">En-Route</div>
+          <div class="tl-content">
+            <div class="tl-icon">🛰️🛡️</div>
+            <h3>4. Active Flight Following & Smooth Touchdown</h3>
+            <p>
+              As the aircraft climbs to FL370, the FOO tracks its radar position. When Cleveland ATC requests a temporary speed restriction, the FOO updates the JFK arrival team and gate controllers so connecting passengers are accommodated.
+            </p>
+            <div class="tl-action">
+              <strong>Outcome:</strong> Flight PA-204 lands at JFK smoothly, on time, safely around the thunderstorm with all legal fuel reserves intact.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: HOW FOO ENSURES SAFETY & ORGANIZATION -->
+    <section id="safety-impact" class="content-section slide-target" data-slide="6">
+      <div class="section-header">
+        <span class="section-tag">Safety Engineering</span>
+        <h2 class="section-title">How a FOO Keeps Flights Safe & Organized</h2>
+        <p class="section-desc">Why modern commercial aviation is the safest mode of transportation in human history.</p>
+      </div>
+
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="pillar-icon">🛡️</div>
+          <h3>1. Independent Redundancy</h3>
+          <p>
+            Humans make fewer mistakes when work is cross-checked. Having an experienced dispatcher on the ground cross-verifying fuel, weight, and weather eliminates single-pilot fatigue oversights.
+          </p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="pillar-icon">⚡</div>
+          <h3>2. Rapid Crisis Management</h3>
+          <p>
+            If a passenger suffers a cardiac event or an engine develops an oil pressure alert, the FOO immediately finds the closest hospital-equipped airport, contacts emergency paramedics, and coordinates priority ATC landing.
+          </p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="pillar-icon">🌱</div>
+          <h3>3. Fuel Efficiency & Eco-Flying</h3>
+          <p>
+            FOOs calculate exact jet-stream wind corridors. By catching favorable 80-knot tailwinds, airlines save millions of gallons of fuel annually, directly cutting CO₂ greenhouse emissions.
+          </p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="pillar-icon">⏱️</div>
+          <h3>4. Network Punctuality</h3>
+          <p>
+            Airlines operate thousands of connecting flights. The FOO coordinates with gate agents, maintenance crews, and catering so aircraft turn around rapidly, keeping flights strictly on schedule.
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Summary Infographic Box -->
+      <div class="infographic-banner">
+        <div class="info-banner-icon">🎯</div>
+        <div class="info-banner-text">
+          <h4>The Core Aviation Philosophy:</h4>
+          <p>
+            "A pilot looks after the individual aircraft; the Flight Operations Officer looks after the entire sky and the safe arrival of every soul onboard."
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: STUDENT PRESENTATION GUIDE & TALKING POINTS -->
+    <section id="speaker-notes" class="content-section notes-section">
+      <div class="section-header">
+        <span class="section-tag">Classroom Support</span>
+        <h2 class="section-title">Student Presentation Cue Cards</h2>
+        <p class="section-desc">Short, easy-to-explain speaking notes designed for your oral project presentation.</p>
+      </div>
+
+      <div class="cue-cards-grid">
+        <div class="cue-card">
+          <div class="cue-number">Card 1 • The Introduction</div>
+          <h4>Who is the FOO?</h4>
+          <p class="cue-speech">
+            "Hello everyone! Today, my project is on the <strong>Flight Operations Officer</strong>, also known as the Flight Dispatcher. Many people think only pilots control a flight, but legally, an airliner cannot take off without the authorization of the FOO on the ground!"
+          </p>
+          <div class="cue-tip"><strong>Key Word to mention:</strong> Joint Operational Control.</div>
+        </div>
+
+        <div class="cue-card">
+          <div class="cue-number">Card 2 • Flight Planning</div>
+          <h4>How they plan the route</h4>
+          <p class="cue-speech">
+            "Duty number one is <strong>Flight Planning</strong>. The FOO calculates the best altitude and airway to save fuel and time, and creates the Operational Flight Plan (OFP) which is given to the pilots."
+          </p>
+          <div class="cue-tip"><strong>Key Word to mention:</strong> OFP (Operational Flight Plan).</div>
+        </div>
+
+        <div class="cue-card">
+          <div class="cue-number">Card 3 • Weather Checks</div>
+          <h4>Watching the skies</h4>
+          <p class="cue-speech">
+            "Duty number two is <strong>Weather Analysis</strong>. The FOO decodes weather reports called METAR and TAF. If there is a severe storm or turbulence ahead, the FOO routes the plane around it."
+          </p>
+          <div class="cue-tip"><strong>Key Word to mention:</strong> METAR (Airport Weather) & SIGMET (Storms).</div>
+        </div>
+
+        <div class="cue-card">
+          <div class="cue-number">Card 4 • Fuel Planning</div>
+          <h4>Why fuel math matters</h4>
+          <p class="cue-speech">
+            "In our project's interactive calculator, we saw fuel isn't just for flying from A to B. The FOO must legally add fuel for taxiing, unexpected delays, flying to an <em>alternate airport</em>, plus a mandatory 30-minute reserve."
+          </p>
+          <div class="cue-tip"><strong>Key Word to mention:</strong> Alternate Airport & Final Reserve Fuel.</div>
+        </div>
+
+        <div class="cue-card">
+          <div class="cue-number">Card 5 • Communication</div>
+          <h4>Talking to the cockpit</h4>
+          <p class="cue-speech">
+            "During the flight, the FOO performs <strong>Flight Following</strong>. They track the aircraft on radar and send live text messages to the cockpit using digital systems like ACARS."
+          </p>
+          <div class="cue-tip"><strong>Key Word to mention:</strong> ACARS & Flight Following.</div>
+        </div>
+
+        <div class="cue-card">
+          <div class="cue-number">Card 6 • Conclusion</div>
+          <h4>Why they are aviation heroes</h4>
+          <p class="cue-speech">
+            "In conclusion, the Flight Operations Officer is the pilot's guardian angel on the ground. By combining weather expertise, fuel science, and crisis management, they ensure billions of passengers land safely every year."
+          </p>
+          <div class="cue-tip"><strong>Closing Line:</strong> "Behind every safe flight is a watchful dispatcher!"</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: CONCLUSION -->
+    <section id="conclusion" class="content-section slide-target" data-slide="7">
+      <div class="conclusion-box">
+        <div class="conclusion-glow"></div>
+        <div class="conclusion-content">
+          <span class="section-tag">Project Conclusion</span>
+          <h2>Aviation Excellence Through Teamwork</h2>
+          <p class="conclusion-lead">
+            Flight operations are an intricate ballet of technology, meteorology, aerodynamics, and human vigilance. The <strong>Flight Operations Officer</strong> embodies the golden standard of modern aviation safety:
+          </p>
+
+          <div class="takeaways-list">
+            <div class="takeaway-item">
+              <span class="t-icon">✅</span>
+              <div>
+                <strong>Shared Responsibility:</strong> Aviation safety relies on the check-and-balance between the Captain in the sky and the FOO on the ground.
+              </div>
+            </div>
+            <div class="takeaway-item">
+              <span class="t-icon">✅</span>
+              <div>
+                <strong>Scientific Precision:</strong> Every kilogram of fuel and nautical mile of routing is calculated down to exact mathematical formulas.
+              </div>
+            </div>
+            <div class="takeaway-item">
+              <span class="t-icon">✅</span>
+              <div>
+                <strong>Continuous Oversight:</strong> From the moment engines start in Chicago until wheels touch down in New York, the FOO never stops watching over the flight.
+              </div>
+            </div>
+          </div>
+
+          <div class="project-signature-block">
+            <div class="sig-line">
+              <span>PROJECT SUBMISSION:</span> <strong>Aviation Science & Operations</strong>
+            </div>
+            <div class="sig-line">
+              <span>TOPIC:</span> <strong>The Role of a Flight Operations Officer (FOO)</strong>
+            </div>
+            <div class="sig-line">
+              <span>STATUS:</span> <strong class="cyan-text">DISPATCH COMPLETED & VERIFIED</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="ops-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <span class="footer-logo">✈️ AERO-DISPATCH 101</span>
+        <p>A professional student project on aviation management, dispatch control, and flight safety.</p>
+      </div>
+      <div class="footer-right">
+        <div class="quick-links">
+          <a href="#hero">Back to Top</a>
+          <a href="#duties">Duties</a>
+          <a href="#interactive-lab">Interactive Lab</a>
+          <a href="#speaker-notes">Speaker Notes</a>
+        </div>
+        <p class="copyright">Designed with modern aviation aesthetics • Clean, clear & educational</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
